@@ -45,21 +45,26 @@ cd currytech-solutions
 
 - Create a `.env` file in the `backend` directory and add:
 
-````PORT=5000
+```bash
+PORT=5000
 MONGO_URI=mongodb://localhost:27017/currytech
 JWT_SECRET=your_jwt_secret_key_here
 JWT_EXPIRE=30d
-NODE_ENV=development```
+NODE_ENV=development
+```
+
 - Create a `.env` file in the `frontend` directory and add:
-```REACT_APP_API_URL=http://localhost:5000/api```
+
+`REACT_APP_API_URL=http://localhost:5000/api`
 
 4. Start the development server (frontend & backend concurrently)
 
-```npm run dev```
+`npm run dev`
 
 5. Access the application
+
 - Frontend: `https://localhost:3000`
-- Backend API: ```https://localhost:5000/api`
+- Backend API: `https://localhost:5000/api`
 
 ## Project Structure
 
@@ -95,4 +100,3 @@ NODE_ENV=development```
 ## License
 
 MIT
-````

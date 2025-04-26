@@ -7,6 +7,7 @@ const {
   deleteTestimonial,
   getAllTestimonials,
   approveTestimonial,
+  getUserTestimonials,
 } = require("../controllers/testimonialController");
 const { protect, authorize } = require("../middlewares/auth");
 
@@ -15,6 +16,8 @@ const router = express.Router();
 router.route("/").get(getTestimonials).post(protect, createTestimonial);
 
 router.route("/admin").get(protect, authorize("admin"), getAllTestimonials);
+
+router.route("/me").get(protect, getUserTestimonials);
 
 router
   .route("/:id")

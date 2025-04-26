@@ -78,3 +78,30 @@ const sendTokenResponse = (user, statusCode, res) => {
     token,
   });
 };
+
+// @desc    Make user an admin (DEVELOPMENT ONLY)
+// @route   GET /api/auth/make-admin
+// @access  Private
+exports.makeAdmin = asyncHandler(async (req, res, next) => {
+  // Find the current user
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    return next(new ErrorResponse("User not found", 404));
+  }
+
+  // Set role to admin
+  user.role = "admin";
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "User is now an admin",
+    data: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  });
+});

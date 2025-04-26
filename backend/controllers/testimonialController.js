@@ -9,7 +9,13 @@ exports.getTestimonials = asyncHandler(async (req, res, next) => {
   // For public access, only return approved testimonials
   const query = { isApproved: true };
 
+  // Log for debugging
+  console.log("Fetching approved testimonials");
+
   const testimonials = await Testimonial.find(query).sort({ createdAt: -1 });
+
+  // Log for debugging
+  console.log(`Found ${testimonials.length} approved testimonials`);
 
   res.status(200).json({
     success: true,
@@ -43,10 +49,15 @@ exports.getTestimonial = asyncHandler(async (req, res, next) => {
 // @route   POST /api/testimonials
 // @access  Private
 exports.createTestimonial = asyncHandler(async (req, res, next) => {
-  // Add user to req.body
+  // Add user ID to req.body
   req.body.user = req.user.id;
 
+  // Log what's being received
+  console.log("Creating testimonial with data:", req.body);
+
   const testimonial = await Testimonial.create(req.body);
+
+  console.log("Testimonial created:", testimonial);
 
   res.status(201).json({
     success: true,
@@ -121,7 +132,9 @@ exports.deleteTestimonial = asyncHandler(async (req, res, next) => {
     );
   }
 
-  await testimonial.remove();
+  // Use deleteOne() instead of remove()
+  await Testimonial.deleteOne({ _id: req.params.id });
+  // OR await testimonial.deleteOne();
 
   res.status(200).json({
     success: true,
@@ -169,5 +182,26 @@ exports.approveTestimonial = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: testimonial,
+  });
+});
+
+// @desc    Get testimonials for current user
+// @route   GET /api/testimonials/me
+// @access  Private
+exports.getUserTestimonials = asyncHandler(async (req, res, next) => {
+  // Log for debugging
+  console.log("Getting testimonials for user ID:", req.user.id);
+
+  const testimonials = await Testimonial.find({ user: req.user.id }).sort({
+    createdAt: -1,
+  });
+
+  // Log for debugging
+  console.log(`Found ${testimonials.length} testimonials for user`);
+
+  res.status(200).json({
+    success: true,
+    count: testimonials.length,
+    data: testimonials,
   });
 });

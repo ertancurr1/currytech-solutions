@@ -4,6 +4,7 @@ const {
   login,
   getMe,
   logout,
+  makeAdmin,
 } = require("../controllers/authController");
 const { protect } = require("../middlewares/auth");
 
@@ -13,5 +14,6 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/me", protect, getMe);
 router.get("/logout", logout);
+router.get("/make-admin", protect, makeAdmin);
 
 module.exports = router;

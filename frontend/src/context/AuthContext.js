@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const decoded = jwtDecode(newToken);
+      console.log("Decoded token:", decoded); // Check if role is included
       setUser(decoded);
     } catch (error) {
       console.error("Error decoding token:", error);

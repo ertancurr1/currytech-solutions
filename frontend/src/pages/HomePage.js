@@ -329,10 +329,25 @@ const HomePage = () => {
       try {
         setLoading(true);
         const response = await getTestimonials();
-        setTestimonials(response.data);
+
+        // Log for debugging
+        console.log("Homepage testimonials response:", response);
+
+        // Check if we have data in the proper format
+        if (response.success && Array.isArray(response.data)) {
+          setTestimonials(response.data);
+        } else if (Array.isArray(response.data?.data)) {
+          // Sometimes the API might nest data one level deeper
+          setTestimonials(response.data.data);
+        } else {
+          // Fallback to empty array if no proper data format is found
+          setTestimonials([]);
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error fetching testimonials:", error);
+        // Set empty array on error
+        setTestimonials([]);
         setLoading(false);
       }
     };
@@ -499,27 +514,47 @@ const HomePage = () => {
       >
         {loading ? (
           <p>Loading testimonials...</p>
-        ) : (
+        ) : testimonials.length > 0 ? (
           <TestimonialsContainer>
             <TestimonialSlider theme={{ mode: theme.mode }}>
               {testimonials.map((testimonial) => (
                 <TestimonialCard
-                  key={testimonial.id}
+                  key={testimonial._id || testimonial.id}
                   theme={{ mode: theme.mode }}
                 >
                   <TestimonialText theme={{ mode: theme.mode }}>
-                    "{testimonial.text}"
+                    "{testimonial.content || testimonial.text}"
                   </TestimonialText>
                   <TestimonialAuthor>
                     <AuthorAvatar>
-                      <img src={testimonial.avatar} alt={testimonial.author} />
+                      <img
+                        src={
+                          testimonial.author?.avatar ||
+                          `https://randomuser.me/api/portraits/lego/${
+                            Math.floor(Math.random() * 8) + 1
+                          }.jpg`
+                        }
+                        alt={
+                          typeof testimonial.author === "object"
+                            ? testimonial.author.name
+                            : testimonial.author
+                        }
+                      />
                     </AuthorAvatar>
                     <AuthorInfo>
                       <AuthorName theme={{ mode: theme.mode }}>
-                        {testimonial.author}
+                        {typeof testimonial.author === "object"
+                          ? testimonial.author.name
+                          : testimonial.author}
                       </AuthorName>
                       <AuthorCompany theme={{ mode: theme.mode }}>
-                        {testimonial.company}
+                        {typeof testimonial.author === "object"
+                          ? `${
+                              testimonial.author.position
+                                ? `${testimonial.author.position}, `
+                                : ""
+                            }${testimonial.author.company}`
+                          : testimonial.company}
                       </AuthorCompany>
                     </AuthorInfo>
                   </TestimonialAuthor>
@@ -527,6 +562,20 @@ const HomePage = () => {
               ))}
             </TestimonialSlider>
           </TestimonialsContainer>
+        ) : (
+          <div style={{ textAlign: "center", padding: "2rem" }}>
+            <p style={{ color: theme.mode === "dark" ? "#cccccc" : "#666666" }}>
+              No testimonials available yet. Be the first to share your
+              experience!
+            </p>
+            <Button
+              variant="primary"
+              to="/dashboard"
+              style={{ marginTop: "1rem" }}
+            >
+              Submit a Testimonial
+            </Button>
+          </div>
         )}
       </Section>
 

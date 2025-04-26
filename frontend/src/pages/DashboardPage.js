@@ -4,9 +4,10 @@ import { ThemeContext } from "../context/ThemeContext";
 import { AuthContext } from "../context/AuthContext";
 import Section from "../components/ui/Section";
 import Button from "../components/ui/Button";
+import AdminPromotion from "../components/AdminPromotion";
 import {
   submitTestimonial,
-  getTestimonials,
+  getUserTestimonials,
 } from "../services/testimonialService";
 import { useForm } from "react-hook-form";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -320,13 +321,19 @@ const DashboardPage = () => {
     const fetchUserTestimonials = async () => {
       try {
         setLoading(true);
-        const response = await getTestimonials();
-        // In a real app, we would filter by user ID on the backend
-        // For now, we'll just show all testimonials
-        setUserTestimonials(response.data);
-        setLoading(false);
+        // Use the updated endpoint
+        const response = await getUserTestimonials();
+        console.log("User testimonials response:", response);
+
+        if (response.success && Array.isArray(response.data)) {
+          setUserTestimonials(response.data);
+        } else {
+          setUserTestimonials([]);
+        }
       } catch (error) {
         console.error("Error fetching testimonials:", error);
+        setUserTestimonials([]);
+      } finally {
         setLoading(false);
       }
     };
@@ -339,9 +346,11 @@ const DashboardPage = () => {
       setSubmitting(true);
       setSubmitError(null);
 
-      // Add rating (converted to number) and author info
+      console.log("Submitting testimonial data:", data);
+
+      // Format the data according to the backend model
       const testimonialData = {
-        ...data,
+        content: data.content,
         rating: Number(data.rating),
         author: {
           name: user.name,
@@ -350,19 +359,24 @@ const DashboardPage = () => {
         },
       };
 
+      console.log("Formatted testimonial data:", testimonialData);
+
       // Submit testimonial
       const response = await submitTestimonial(testimonialData);
+      console.log("Testimonial submission response:", response);
 
       if (response.success) {
         setSubmitSuccess(true);
         reset(); // Clear form fields
 
         // Add the new testimonial to the list
-        setUserTestimonials([response.data, ...userTestimonials]);
+        if (response.data) {
+          setUserTestimonials([response.data, ...userTestimonials]);
+        }
       }
     } catch (error) {
-      setSubmitError("Failed to submit testimonial. Please try again later.");
       console.error("Testimonial submission error:", error);
+      setSubmitError("Failed to submit testimonial. Please try again later.");
     } finally {
       setSubmitting(false);
     }
@@ -391,6 +405,7 @@ const DashboardPage = () => {
         <DashboardContainer>
           {/* Sidebar */}
           <DashboardSidebar theme={{ mode: theme.mode }}>
+            <AdminPromotion />
             {/* Profile Card */}
             <ProfileCard theme={{ mode: theme.mode }}>
               <ProfileAvatar>{getNameInitial(user?.name)}</ProfileAvatar>

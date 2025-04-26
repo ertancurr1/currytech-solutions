@@ -18,6 +18,7 @@ import BlogPostPage from "./pages/BlogPostPage";
 import ContactPage from "./pages/ContactPage";
 import DashboardPage from "./pages/DashboardPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import AdminDashboard from "./pages/AdminDashboard";
 
 // Auth pages
 import AuthLayout from "./pages/auth/AuthLayout";
@@ -64,6 +65,7 @@ function AppContent() {
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/admin" element={<AdminDashboard />} />
             </Route>
 
             {/* Add a catch-all route */}

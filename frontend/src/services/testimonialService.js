@@ -69,3 +69,14 @@ export const approveTestimonial = async (id) => {
     throw error.response?.data?.error || "Failed to approve testimonial";
   }
 };
+
+// Get testimonials for current user
+export const getUserTestimonials = async () => {
+  try {
+    const response = await api.get("/testimonials/me");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user testimonials:", error);
+    throw error.response?.data?.error || "Failed to fetch user testimonials";
+  }
+};

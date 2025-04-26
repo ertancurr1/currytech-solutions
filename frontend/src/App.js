@@ -13,7 +13,10 @@ import ServicesPage from "./pages/ServicesPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import ContactPage from "./pages/ContactPage";
-// Other pages will be imported here
+
+import AuthLayout from "./pages/auth/AuthLayout";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 
 function App() {
   return (
@@ -37,7 +40,15 @@ function App() {
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:id" element={<BlogPostPage />} />
                 <Route path="/contact" element={<ContactPage />} />
-                {/* Other routes will go here */}
+
+                {/* Auth routes */}
+                <Route path="/auth" element={<AuthLayout />}>
+                  <Route path="login" element={<LoginPage />} />
+                  <Route path="register" element={<RegisterPage />} />
+                </Route>
+
+                {/* Add a catch-all route */}
+                <Route path="*" element={<div>Page Not Found</div>} />
               </Routes>
             </main>
             <Footer />

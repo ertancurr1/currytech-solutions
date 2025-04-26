@@ -207,7 +207,7 @@ const Footer = () => {
             <IconWrapper>
               <LocationOnIcon />
             </IconWrapper>
-            <span>Djon Kenedi Street 27, Skopje, North Macedonia 1010</span>
+            <span>Djon Kenedi Street 27, Skopje, RNM 1010</span>
           </ContactItem>
           <ContactItem>
             <IconWrapper>

@@ -12,6 +12,7 @@ import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
+import ContactPage from "./pages/ContactPage";
 // Other pages will be imported here
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:id" element={<BlogPostPage />} />
+                <Route path="/contact" element={<ContactPage />} />
                 {/* Other routes will go here */}
               </Routes>
             </main>

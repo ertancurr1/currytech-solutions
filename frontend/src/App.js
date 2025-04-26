@@ -6,8 +6,8 @@ import GlobalStyles from "./styles/GlobalStyles";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-// Import pages (TODO: create these later)
 import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
 // Other pages will be imported here
 
 function App() {
@@ -27,6 +27,7 @@ function App() {
             <main style={{ flex: 1 }}>
               <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
                 {/* Other routes will go here */}
               </Routes>
             </main>

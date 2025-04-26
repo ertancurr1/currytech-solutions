@@ -57,16 +57,57 @@ export const TEAM_MEMBERS = [
     name: "Ethan Curry",
     position: "CEO & Founder",
     bio: "With over 15 years of experience in tech leadership, Ethan drives our vision and strategy.",
-    image: "/team/ethan-curry.jpg",
+    image: "https://source.unsplash.com/random/300x300/?portrait&sig=1",
   },
   {
     id: 2,
-    name: "Matthew Ferris",
+    name: "Zoe Idris",
     position: "CTO",
-    bio: "Matthew brings cutting-edge technical expertise from his background at Fortune 500 tech companies.",
-    image: "/team/matthew-ferris.jpg",
+    bio: "Zoe brings cutting-edge technical expertise from her background at Fortune 500 tech companies.",
+    image: "https://source.unsplash.com/random/300x300/?portrait&sig=2",
   },
-  // TODO: Add more team members as needed
+  {
+    id: 3,
+    name: "Matthew Ferris",
+    position: "Lead Developer",
+    bio: "Matthew leads our development team with a focus on creating elegant and efficient code.",
+    image: "https://source.unsplash.com/random/300x300/?portrait&sig=3",
+  },
+  {
+    id: 4,
+    name: "Katherine Velson",
+    position: "UX/UI Designer",
+    bio: "Katherine creates beautiful and intuitive user interfaces that enhance the user experience.",
+    image: "https://source.unsplash.com/random/300x300/?portrait&sig=4",
+  },
+  {
+    id: 5,
+    name: "Hassan Ibrahim",
+    position: "Project Manager",
+    bio: "Hassan ensures our projects are delivered on time and within budget, exceeding client expectations.",
+    image: "https://source.unsplash.com/random/300x300/?portrait&sig=5",
+  },
+  {
+    id: 6,
+    name: "Fiona Morris",
+    position: "Marketing Director",
+    bio: "Fiona develops our marketing strategies to connect with clients and share our technology solutions.",
+    image: "https://source.unsplash.com/random/300x300/?portrait&sig=6",
+  },
+  {
+    id: 7,
+    name: "Emery Demers",
+    position: "DevOps Engineer",
+    bio: "Emery builds and maintains our robust infrastructure and continuous integration processes.",
+    image: "https://source.unsplash.com/random/300x300/?portrait&sig=7",
+  },
+  {
+    id: 8,
+    name: "Amber Faye",
+    position: "Client Success Manager",
+    bio: "Amber works closely with our clients to ensure they get the most value from our solutions.",
+    image: "https://source.unsplash.com/random/300x300/?portrait&sig=8",
+  },
 ];
 
 export const FAQ_ITEMS = [

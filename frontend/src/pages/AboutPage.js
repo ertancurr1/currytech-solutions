@@ -4,6 +4,13 @@ import { ThemeContext } from "../context/ThemeContext";
 import Section from "../components/ui/Section";
 import Button from "../components/ui/Button";
 import { TEAM_MEMBERS } from "../utils/constants";
+import {
+  FaRegLightbulb,
+  FaStar,
+  FaHandshake,
+  FaPeopleGroup,
+} from "react-icons/fa6";
+import CurryTechOffice from "../assets/CurryTech-Office.jpg";
 
 // Page Header Styling
 const PageHeader = styled.div`
@@ -253,28 +260,28 @@ const AboutPage = () => {
       title: "Innovation",
       description:
         "We embrace cutting-edge technologies and creative solutions to solve complex problems.",
-      icon: "💡",
+      icon: <FaRegLightbulb />,
     },
     {
       id: 2,
       title: "Excellence",
       description:
         "We are committed to delivering exceptional quality in everything we do.",
-      icon: "⭐",
+      icon: <FaStar />,
     },
     {
       id: 3,
       title: "Integrity",
       description:
         "We operate with honesty, transparency, and ethical business practices.",
-      icon: "🤝",
+      icon: <FaHandshake />,
     },
     {
       id: 4,
       title: "Collaboration",
       description:
         "We work together as a team and partner closely with our clients for shared success.",
-      icon: "👥",
+      icon: <FaPeopleGroup />,
     },
   ];
 
@@ -295,10 +302,7 @@ const AboutPage = () => {
       <Section>
         <AboutContent>
           <AboutImage>
-            <img
-              src="https://source.unsplash.com/random/600x400/?office"
-              alt="CurryTech Office"
-            />
+            <img src={CurryTechOffice} alt="CurryTech Office" />
           </AboutImage>
           <AboutText theme={{ mode: theme.mode }}>
             <h2>Our Story</h2>

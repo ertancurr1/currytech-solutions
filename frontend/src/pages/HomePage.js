@@ -7,6 +7,7 @@ import { SERVICES } from "../utils/constants";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { getTestimonials } from "../services/testimonialService";
+import technologyImage from "../assets/technology-features.png";
 
 // Hero Section Styling
 const HeroContainer = styled.div`
@@ -178,7 +179,7 @@ const ImgContainer = styled.div`
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 `;
 
@@ -394,10 +395,7 @@ const HomePage = () => {
       <Section>
         <FeaturesContainer>
           <ImgContainer>
-            <img
-              src="https://source.unsplash.com/random/600x400/?tech"
-              alt="Technology Features"
-            />
+            <img src={technologyImage} alt="Technology Features" />
           </ImgContainer>
           <div>
             <h2

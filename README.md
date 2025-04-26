@@ -33,7 +33,7 @@ A modern, responsive website for CurryTech Solutions, a fictional tech startup o
 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/currytech-solutions.git
+git clone https://github.com/ertancurr1/currytech-solutions.git
 cd currytech-solutions
 ```
 

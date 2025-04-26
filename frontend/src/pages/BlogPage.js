@@ -430,7 +430,13 @@ const BlogPage = () => {
                         </MetaItem>
                         <MetaItem>
                           <FavoriteIcon />
-                          <span>{post.reactions || 0}</span>
+                          <span>
+                            {typeof post.reactions === "object"
+                              ? post.reactions.likes ||
+                                Object.values(post.reactions)[0] ||
+                                0
+                              : post.reactions || 0}
+                          </span>
                         </MetaItem>
                         <MetaItem>
                           <ChatBubbleOutlineIcon />

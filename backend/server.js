@@ -1,12 +1,22 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require("path");
 const cors = require("cors");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
 const errorHandler = require("./middlewares/error");
 
-// Load env vars
-dotenv.config();
+// Load env vars from .env file
+dotenv.config({ path: path.resolve(__dirname, ".env") });
+
+console.log("Environment variables loaded:", {
+  PORT: process.env.PORT,
+  NODE_ENV: process.env.NODE_ENV,
+  MONGO_URI_EXISTS: !!process.env.MONGO_URI,
+});
+
+// // Load env vars
+// dotenv.config();
 
 // Connect to database
 connectDB();

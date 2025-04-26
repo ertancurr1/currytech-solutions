@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { getCurrentUser } from "../services/authService";
 
 export const AuthContext = createContext();
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     setToken(newToken);
 
     try {
-      const decoded = jwt_decode(newToken);
+      const decoded = jwtDecode(newToken);
       setUser(decoded);
     } catch (error) {
       console.error("Error decoding token:", error);
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           // Verify token expiration
-          const decoded = jwt_decode(token);
+          const decoded = jwtDecode(token);
           const currentTime = Date.now() / 1000;
 
           if (decoded.exp < currentTime) {

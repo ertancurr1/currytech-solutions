@@ -10,8 +10,8 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-family: 'Roboto', sans-serif;
     background-color: ${(props) =>
-      props.theme.mode === "dark" ? "#121212" : "#f5f5f5"};
-    color: ${(props) => (props.theme.mode === "dark" ? "#f5f5f5" : "#333")};
+      props.theme?.mode === "dark" ? "#121212" : "#f5f5f5"};
+    color: ${(props) => (props.theme?.mode === "dark" ? "#f5f5f5" : "#333")};
     transition: all 0.3s ease;
   }
   

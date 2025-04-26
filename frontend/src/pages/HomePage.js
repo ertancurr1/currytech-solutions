@@ -6,6 +6,7 @@ import Button from "../components/ui/Button";
 import { SERVICES } from "../utils/constants";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { getTestimonials } from "../services/testimonialService";
 
 // Hero Section Styling
 const HeroContainer = styled.div`
@@ -322,43 +323,12 @@ const HomePage = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch testimonials (simulated)
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        // Mock data
-        const mockTestimonials = [
-          {
-            id: 1,
-            text: "CurryTech Solutions transformed our business with their innovative web solutions. Their team's expertise and dedication made the process seamless.",
-            author: "Aaron Krasson",
-            company: "TechGrowth Inc.",
-            avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-          },
-          {
-            id: 2,
-            text: "Working with CurryTech was a game-changer for our startup. They delivered a robust platform that exceeded our expectations and helped us scale rapidly.",
-            author: "Maria Peterson",
-            company: "InnovateTech",
-            avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-          },
-          {
-            id: 3,
-            text: "The mobile app developed by CurryTech Solutions has significantly improved our customer engagement. Their attention to detail and user experience is unmatched.",
-            author: "Steven Stoyan",
-            company: "AppMasters",
-            avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-          },
-          {
-            id: 4,
-            text: "CurryTech's cloud migration services helped us modernize our infrastructure and reduce costs by 40%. Their team was professional and knowledgeable throughout the project.",
-            author: "Erica Berry",
-            company: "CloudNine",
-            avatar: "https://randomuser.me/api/portraits/women/4.jpg",
-          },
-        ];
-
-        setTestimonials(mockTestimonials);
+        setLoading(true);
+        const response = await getTestimonials();
+        setTestimonials(response.data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching testimonials:", error);

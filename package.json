@@ -1,0 +1,16 @@
+{
+  "name": "currytech-solutions",
+  "version": "1.0.0",
+  "description": "Fullstack business website for CurryTech Solutions",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}

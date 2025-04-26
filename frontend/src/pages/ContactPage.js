@@ -314,6 +314,7 @@ const ContactPage = () => {
       setSubmitError(
         "There was an error submitting your message. Please try again later."
       );
+      console.error("Contact form submission error:", error);
     } finally {
       setSubmitting(false);
     }

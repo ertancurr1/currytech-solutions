@@ -36,16 +36,20 @@ export const AuthProvider = ({ children }) => {
 
       if (token) {
         try {
+          // Verify token expiration
           const decoded = jwt_decode(token);
           const currentTime = Date.now() / 1000;
 
           if (decoded.exp < currentTime) {
+            // Token expired
             logout();
           } else {
+            // Token valid, get current user
             const currentUser = await getCurrentUser();
             setUser(currentUser);
           }
         } catch (error) {
+          // Invalid token
           console.error("Error verifying token:", error);
           logout();
         }

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { ThemeContext } from "../context/ThemeContext";
 import Section from "../components/ui/Section";
 import Button from "../components/ui/Button";
-import { fetchPosts, searchPosts } from "../services/blogService";
+import { getAllBlogs } from "../services/blogService";
 import SearchIcon from "@mui/icons-material/Search";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
@@ -241,10 +241,10 @@ const PaginationButton = styled.button`
   }
 `;
 
-const getPlaceholderImage = (id) => {
-  const imageId = (id % 30) + 1;
-  return `https://source.unsplash.com/random/600x400/?blog,technology&sig=${imageId}`;
-};
+// const getPlaceholderImage = (id) => {
+//   const imageId = (id % 30) + 1;
+//   return `https://source.unsplash.com/random/600x400/?blog,technology&sig=${imageId}`;
+// };
 
 const BlogPage = () => {
   const { theme } = useContext(ThemeContext);
@@ -263,13 +263,21 @@ const BlogPage = () => {
         setLoading(true);
         setError(null);
 
-        const skip = (currentPage - 1) * postsPerPage;
-        const data = await fetchPosts(postsPerPage, skip);
+        const response = await getAllBlogs(currentPage, postsPerPage);
 
-        setPosts(data.posts);
-        setTotalPosts(data.total);
+        console.log("Blog posts response:", response);
+
+        if (response.success && Array.isArray(response.data)) {
+          setPosts(response.data);
+          setTotalPosts(response.total || 0);
+        } else {
+          setPosts([]);
+          setTotalPosts(0);
+        }
+
         setLoading(false);
       } catch (err) {
+        console.error("Error loading blog posts:", err);
         setError("Failed to load blog posts. Please try again later.");
         setLoading(false);
       }
@@ -290,10 +298,15 @@ const BlogPage = () => {
       setLoading(true);
       setError(null);
 
-      const data = await searchPosts(searchQuery);
+      const allPosts = await getAllBlogs(1, 100);
+      const filteredPosts = allPosts.data.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.content.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
-      setPosts(data.posts);
-      setTotalPosts(data.total);
+      setPosts(filteredPosts);
+      setTotalPosts(filteredPosts.length);
       setLoading(false);
     } catch (err) {
       setError("Search failed. Please try again.");
@@ -339,10 +352,8 @@ const BlogPage = () => {
     return pageNumbers;
   };
 
-  const formatDate = (postId) => {
-    const date = new Date();
-    date.setDate(date.getDate() - (postId % 30));
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -402,45 +413,47 @@ const BlogPage = () => {
             {posts.length > 0 ? (
               <BlogGrid>
                 {posts.map((post) => (
-                  <BlogCard key={post.id} theme={{ mode: theme.mode }}>
+                  <BlogCard key={post._id} theme={{ mode: theme.mode }}>
                     <BlogImageContainer>
                       <BlogImage
-                        src={getPlaceholderImage(post.id)}
+                        src={
+                          post.coverImage ||
+                          `https://source.unsplash.com/random/600x400/?blog,technology&sig=${post._id}`
+                        }
                         alt={post.title}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://via.placeholder.com/600x400?text=CurryTech+Blog";
+                        }}
                       />
                     </BlogImageContainer>
                     <BlogContent>
                       <BlogTitle theme={{ mode: theme.mode }}>
-                        <Link to={`/blog/${post.id}`}>{post.title}</Link>
+                        <Link to={`/blog/${post._id}`}>{post.title}</Link>
                       </BlogTitle>
                       <BlogExcerpt theme={{ mode: theme.mode }}>
-                        {truncateText(post.body)}
+                        {truncateText(post.content)}
                       </BlogExcerpt>
-                      <Button variant="secondary" to={`/blog/${post.id}`}>
+                      <Button variant="secondary" to={`/blog/${post._id}`}>
                         Read More
                       </Button>
                       <BlogMeta theme={{ mode: theme.mode }}>
                         <MetaItem>
                           <AccessTimeIcon />
-                          <span>{formatDate(post.id)}</span>
+                          <span>{formatDate(post.createdAt)}</span>
                         </MetaItem>
                         <MetaItem>
                           <PersonIcon />
-                          <span>User {post.userId}</span>
+                          <span>{post.author?.name || "Admin"}</span>
                         </MetaItem>
                         <MetaItem>
                           <FavoriteIcon />
-                          <span>
-                            {typeof post.reactions === "object"
-                              ? post.reactions.likes ||
-                                Object.values(post.reactions)[0] ||
-                                0
-                              : post.reactions || 0}
-                          </span>
+                          <span>{post.likes || 0}</span>
                         </MetaItem>
                         <MetaItem>
                           <ChatBubbleOutlineIcon />
-                          <span>{Math.floor(Math.random() * 10)}</span>
+                          <span>{post.comments?.length || 0}</span>
                         </MetaItem>
                       </BlogMeta>
                     </BlogContent>

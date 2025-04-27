@@ -3,6 +3,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { AuthContext } from "../context/AuthContext";
 import Section from "../components/ui/Section";
 import Button from "../components/ui/Button";
+import BlogManagement from "../components/admin/BlogManagement";
 import {
   getAllTestimonials,
   approveTestimonial,
@@ -21,6 +22,7 @@ const AdminDashboard = () => {
   const [message, setMessage] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [testimonialToDelete, setTestimonialToDelete] = useState(null);
+  const [activeTab, setActiveTab] = useState("testimonials");
 
   useEffect(() => {
     if (user?.role === "admin") {
@@ -305,6 +307,62 @@ const AdminDashboard = () => {
         subtitle="Manage website content"
         centered
       >
+        {/* Tab navigation */}
+        <div
+          style={{
+            display: "flex",
+            borderBottom: `1px solid ${
+              theme.mode === "dark" ? "#333" : "#ddd"
+            }`,
+            marginBottom: "2rem",
+          }}
+        >
+          <div
+            onClick={() => setActiveTab("testimonials")}
+            style={{
+              padding: "1rem 1.5rem",
+              cursor: "pointer",
+              borderBottom:
+                activeTab === "testimonials"
+                  ? `3px solid ${theme.mode === "dark" ? "#1e88e5" : "#007bff"}`
+                  : "none",
+              fontWeight: activeTab === "testimonials" ? "bold" : "normal",
+              color:
+                activeTab === "testimonials"
+                  ? theme.mode === "dark"
+                    ? "#1e88e5"
+                    : "#007bff"
+                  : theme.mode === "dark"
+                  ? "#aaa"
+                  : "#666",
+            }}
+          >
+            Testimonials
+          </div>
+          <div
+            onClick={() => setActiveTab("blogs")}
+            style={{
+              padding: "1rem 1.5rem",
+              cursor: "pointer",
+              borderBottom:
+                activeTab === "blogs"
+                  ? `3px solid ${theme.mode === "dark" ? "#1e88e5" : "#007bff"}`
+                  : "none",
+              fontWeight: activeTab === "blogs" ? "bold" : "normal",
+              color:
+                activeTab === "blogs"
+                  ? theme.mode === "dark"
+                    ? "#1e88e5"
+                    : "#007bff"
+                  : theme.mode === "dark"
+                  ? "#aaa"
+                  : "#666",
+            }}
+          >
+            Blog Posts
+          </div>
+        </div>
+
         {/* Message display */}
         {message && (
           <div
@@ -335,106 +393,124 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Loading indicator */}
-        {loading ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              padding: "3rem",
-            }}
-          >
-            <CircularProgress />
-          </div>
-        ) : (
+        {/* Content based on active tab */}
+        {activeTab === "testimonials" && (
           <>
-            {/* Pending Testimonials Section */}
-            <div style={{ marginBottom: "4rem" }}>
-              <h3
+            {/* Loading indicator */}
+            {loading ? (
+              <div
                 style={{
-                  fontSize: "1.5rem",
-                  fontWeight: "bold",
-                  marginBottom: "1.5rem",
-                  color: theme.mode === "dark" ? "#fff" : "#333",
-                  borderBottom: `2px solid ${
-                    theme.mode === "dark" ? "#444" : "#eee"
-                  }`,
-                  paddingBottom: "0.5rem",
+                  display: "flex",
+                  justifyContent: "center",
+                  padding: "3rem",
                 }}
               >
-                Pending Testimonials ({pendingTestimonials.length})
-              </h3>
+                <CircularProgress />
+              </div>
+            ) : (
+              <>
+                {/* Pending Testimonials Section */}
+                <div style={{ marginBottom: "4rem" }}>
+                  <h3
+                    style={{
+                      fontSize: "1.5rem",
+                      fontWeight: "bold",
+                      marginBottom: "1.5rem",
+                      color: theme.mode === "dark" ? "#fff" : "#333",
+                      borderBottom: `2px solid ${
+                        theme.mode === "dark" ? "#444" : "#eee"
+                      }`,
+                      paddingBottom: "0.5rem",
+                    }}
+                  >
+                    Pending Testimonials ({pendingTestimonials.length})
+                  </h3>
 
-              {pendingTestimonials.length > 0 ? (
-                <div style={{ display: "grid", gap: "1.5rem" }}>
-                  {pendingTestimonials.map((testimonial) => (
-                    <TestimonialCard
-                      key={testimonial._id}
-                      testimonial={testimonial}
-                      isPending={true}
-                    />
-                  ))}
+                  {pendingTestimonials.length > 0 ? (
+                    <div style={{ display: "grid", gap: "1.5rem" }}>
+                      {pendingTestimonials.map((testimonial) => (
+                        <TestimonialCard
+                          key={testimonial._id}
+                          testimonial={testimonial}
+                          isPending={true}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <p
+                      style={{
+                        textAlign: "center",
+                        padding: "2rem",
+                        backgroundColor:
+                          theme.mode === "dark" ? "#1e1e1e" : "#f5f5f5",
+                        borderRadius: "8px",
+                        color: theme.mode === "dark" ? "#aaa" : "#666",
+                      }}
+                    >
+                      No pending testimonials to review.
+                    </p>
+                  )}
                 </div>
-              ) : (
-                <p
-                  style={{
-                    textAlign: "center",
-                    padding: "2rem",
-                    backgroundColor:
-                      theme.mode === "dark" ? "#1e1e1e" : "#f5f5f5",
-                    borderRadius: "8px",
-                    color: theme.mode === "dark" ? "#aaa" : "#666",
-                  }}
-                >
-                  No pending testimonials to review.
-                </p>
-              )}
-            </div>
 
-            {/* Approved Testimonials Section */}
-            <div>
-              <h3
-                style={{
-                  fontSize: "1.5rem",
-                  fontWeight: "bold",
-                  marginBottom: "1.5rem",
-                  color: theme.mode === "dark" ? "#fff" : "#333",
-                  borderBottom: `2px solid ${
-                    theme.mode === "dark" ? "#444" : "#eee"
-                  }`,
-                  paddingBottom: "0.5rem",
-                }}
-              >
-                Approved Testimonials ({approvedTestimonials.length})
-              </h3>
+                {/* Approved Testimonials Section */}
+                <div>
+                  <h3
+                    style={{
+                      fontSize: "1.5rem",
+                      fontWeight: "bold",
+                      marginBottom: "1.5rem",
+                      color: theme.mode === "dark" ? "#fff" : "#333",
+                      borderBottom: `2px solid ${
+                        theme.mode === "dark" ? "#444" : "#eee"
+                      }`,
+                      paddingBottom: "0.5rem",
+                    }}
+                  >
+                    Approved Testimonials ({approvedTestimonials.length})
+                  </h3>
 
-              {approvedTestimonials.length > 0 ? (
-                <div style={{ display: "grid", gap: "1.5rem" }}>
-                  {approvedTestimonials.map((testimonial) => (
-                    <TestimonialCard
-                      key={testimonial._id}
-                      testimonial={testimonial}
-                      isPending={false}
-                    />
-                  ))}
+                  {approvedTestimonials.length > 0 ? (
+                    <div style={{ display: "grid", gap: "1.5rem" }}>
+                      {approvedTestimonials.map((testimonial) => (
+                        <TestimonialCard
+                          key={testimonial._id}
+                          testimonial={testimonial}
+                          isPending={false}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <p
+                      style={{
+                        textAlign: "center",
+                        padding: "2rem",
+                        backgroundColor:
+                          theme.mode === "dark" ? "#1e1e1e" : "#f5f5f5",
+                        borderRadius: "8px",
+                        color: theme.mode === "dark" ? "#aaa" : "#666",
+                      }}
+                    >
+                      No approved testimonials yet.
+                    </p>
+                  )}
                 </div>
-              ) : (
-                <p
-                  style={{
-                    textAlign: "center",
-                    padding: "2rem",
-                    backgroundColor:
-                      theme.mode === "dark" ? "#1e1e1e" : "#f5f5f5",
-                    borderRadius: "8px",
-                    color: theme.mode === "dark" ? "#aaa" : "#666",
-                  }}
-                >
-                  No approved testimonials yet.
-                </p>
-              )}
-            </div>
+
+                {/* Refresh button */}
+                <div style={{ textAlign: "center", marginTop: "2rem" }}>
+                  <Button
+                    variant="primary"
+                    onClick={fetchTestimonials}
+                    disabled={loading}
+                  >
+                    {loading ? "Refreshing..." : "Refresh Testimonials"}
+                  </Button>
+                </div>
+              </>
+            )}
           </>
         )}
+
+        {activeTab === "blogs" && <BlogManagement />}
 
         {/* Delete Confirmation Modal */}
         {deleteModalOpen && testimonialToDelete && (
@@ -507,17 +583,6 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
-
-        {/* Refresh button */}
-        <div style={{ textAlign: "center", marginTop: "2rem" }}>
-          <Button
-            variant="primary"
-            onClick={fetchTestimonials}
-            disabled={loading}
-          >
-            {loading ? "Refreshing..." : "Refresh Testimonials"}
-          </Button>
-        </div>
       </Section>
     </>
   );

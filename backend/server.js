@@ -25,6 +25,7 @@ connectDB();
 const authRoutes = require("./routes/authRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const testimonialRoutes = require("./routes/testimonialRoutes");
+const blogRoutes = require("./routes/blogRoutes");
 
 const app = express();
 
@@ -43,6 +44,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/testimonials", testimonialRoutes);
+app.use("/api/blogs", blogRoutes);
 
 // Base route
 app.get("/", (req, res) => {
